@@ -1,6 +1,7 @@
 const express = require("express");
 const connectionDB = require("./db/db");
 const routes = require("./routes/auth/authRoute");
+const message = require("./routes/message/messageRoute");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
@@ -25,6 +26,7 @@ app.use(cors(corsOperation));
 
 //auth routes
 app.use("/api/auth", routes);
+app.use("/api/message",message);
 
 // localhost
 const PORT = process.env.PORT || 8000;
