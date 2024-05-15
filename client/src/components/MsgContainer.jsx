@@ -6,7 +6,7 @@ import MsgInput from "./MsgInput";
 
 const MsgContainer = () => {
   return (
-    <div className="w-3/5 md:w-[60%] rounded-lg h-80vh md:h-[86vh] relative left-4 md:left-[10%] flex justify-center items-center mt-24 bg-gray-800">
+    <div className="w-[58%]  rounded-lg  h-[84vh] relative left-4  flex justify-center items-center mt-24 bg-gray-800">
       <div className="flex flex-col w-full bg-gray-800">
         <div className="h-[290px] relative top-4 overflow-y-scroll">
           <ReceivedMsg /> {/* Receive msg */}
