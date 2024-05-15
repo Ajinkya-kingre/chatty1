@@ -2,7 +2,7 @@ import React from "react";
 import { FaPaperPlane, FaPaperclip, FaRegSmile } from "react-icons/fa";
 const MsgInput = () => {
   return (
-    <div className="w-[90%] relative top-5 mx-auto">
+    <div className="w-[90%] relative top-6 mx-auto">
       <form>
         <label for="chat" className="sr-only">
           Your message

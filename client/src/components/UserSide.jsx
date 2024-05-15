@@ -13,7 +13,7 @@ const UserSide = () => {
   };
 
   return (
-    <div className="flex rounded-2xl mt-24 flex-col sm:h-[408px] md:h-[408px] w-72 bg-gray-900 text-white">
+    <div className="flex rounded-2xl mt-24 flex-col sm:h-[408px] md:h-[86vh] w-100 md:w-[20%] bg-gray-900 text-white">
       {/* Inbox Header */}
       <div className="px-5 py-2  flex items-center justify-between border-b border-gray-700">
         <h2 className="text-lg font-semibold">Inbox</h2>

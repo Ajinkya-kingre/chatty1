@@ -4,7 +4,7 @@ import { FaSignOutAlt, FaUser, FaCog, FaAddressBook } from "react-icons/fa";
 const SidebarLeft = () => {
   return (
     <div>
-      <div className="flex  w-44 m-4 sm:h-[490px] md:h-[490px] flex-col items-center rounded-2xl bg-secondary justify-between flex-grow">
+      <div className="flex w-44 md:w-60 m-4 md:m-[6] sm:h-[490px] md:h-[95vh] flex-col items-center rounded-2xl bg-secondary justify-between flex-grow">
         {/* User Profile */}
         <div className="flex gap-2 relative right-2  items-center mt-5">
           <img
