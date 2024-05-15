@@ -13,7 +13,7 @@ const ReceivedMsg = () => {
 
   return (
     <>
-      <div className="flex w-64  relative mb-6 left-6 items-start gap-2">
+      <div className="flex w-[50%]  relative mb-6 left-[8%] items-start gap-2">
         <img
           className="w-6 h-6 rounded-full"
           src="person.jpg"

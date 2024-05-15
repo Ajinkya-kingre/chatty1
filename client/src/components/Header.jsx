@@ -2,11 +2,11 @@ import React from "react";
 
 const Header = () => {
   return (
-    <div >
-      <nav className="pl-7 justify-between absolute m-4 right-[1%] w-[79%] rounded-lg h-16 flex bg-gray-500">
+    <div>
+      <nav className="pl-7 justify-between absolute m-4 right-[1%] w-[79%] min-w-[300px]   max-w-[1138px] rounded-lg h-16 flex bg-gray-500">
         {/* Left nav */}
         <div className="flex justify-center items-center">
-          <h1 className="text-center font-bold  font- text-white">ChatApp</h1>
+          <h1 className="text-center font-bold text-white">ChatApp</h1>
         </div>
         {/* Right nav */}
         <div className="flex mr-8 items-center space-x-2">

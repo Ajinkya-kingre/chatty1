@@ -3,7 +3,7 @@ import React from "react";
 const ReceivedMsg = () => {
   return (
     <div>
-      <div className="flex w-64 relative mb-6 left-72  items-start gap-2">
+      <div className="flex w-[50%] relative mb-6 left-[50%]  items-start gap-2">
         <img
           className="w-6 h-6 rounded-full"
           src="person.jpg"

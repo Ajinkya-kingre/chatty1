@@ -12,28 +12,28 @@ const SidebarLeft = () => {
             alt="Profile"
             className="w-7 h-7  rounded-full"
           />
-          <p className="text-sm text-white font-semibold">
+          <p className="text-2xl text-white font-semibold">
             hi, <span>aftab</span>
           </p>
         </div>
 
-        <div className="flex bottom-14 relative right-5  flex-col  items-center space-y-9">
+        <div className="flex bottom-36 relative right-7  flex-col  items-center space-y-9">
           <div className="gap-2 sidebar-icon items-center flex  justify-center">
-            <FaUser className="text-primary text-base hover:cursor-pointer" />
-            <span className="text-base text-white mt-1">Profile</span>
+            <FaUser className="text-primary text-xl hover:cursor-pointer" />
+            <span className="text-xl text-white mt-1">Profile</span>
           </div>
           <div className="gap-2 sidebar-icon flex items-center justify-center">
-            <FaCog className="text-primary text-base hover:cursor-pointer" />
-            <span className="text-base text-white mt-1">setting</span>
+            <FaCog className="text-primary text-xl hover:cursor-pointer" />
+            <span className="text-xl text-white mt-1">setting</span>
           </div>
           <div className="gap-2 sidebar-icon flex items-center justify-center">
-            <FaAddressBook className="text-primary text-base hover:cursor-pointer" />
-            <span className="text-base text-white mt-1">Contact</span>
+            <FaAddressBook className="text-primary text-xl hover:cursor-pointer" />
+            <span className="text-xl text-white mt-1">Contact</span>
           </div>
         </div>
-        <div className="gap-2 relative right-4 bottom-6 flex items-center justify-center">
-          <FaSignOutAlt className="text-primary text-base hover:cursor-pointer" />
-          <span className="text-base text-white mt-1">Log Out</span>
+        <div className="gap-2 relative right-7  bottom-6 flex items-center justify-center">
+          <FaSignOutAlt className="text-primary text-xl hover:cursor-pointer" />
+          <span className="text-xl text-white mt-1">Log Out</span>
         </div>
       </div>
     </div>
