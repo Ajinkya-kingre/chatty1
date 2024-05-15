@@ -4,25 +4,31 @@ const User = require("../model/user");
 const isAuthenticated = async (req, res, next) => {
   const token = req.header("Authorization");
   if (!token) {
-    return res.status(401).json({ message: "token is not found" });
+    return res.status(401).json({ message: "Token not found" });
   }
-  const jwtToken = token.replace("Bearer", "").trim();
-  console.log("token from authUSer middleware", jwtToken);
+  
+  const jwtToken = token.replace("Bearer ", "").trim();
+  // console.log("Token from auth middleware:", jwtToken);
 
-  next();
   try {
     const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY);
 
     const userData = await User.findOne({ email: isVerified.email }).select({
       password: 0,
     });
-    console.log(userData);
+
+    if (!userData) {
+      return res.status(401).json({ message: "Unauthorized token" });
+    }
 
     req.token = token;
     req.user = userData;
-    req.userID = userData._id;
+    req.id = userData._id; // Changed from req.userID to req.id for consistency with previous code
+
+    next();
   } catch (error) {
-    return res.status(401).json({ message: "unAnuthorize token" });
+    console.error(error);
+    return res.status(401).json({ message: "Unauthorized token" });
   }
 };
 
