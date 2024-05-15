@@ -1,7 +1,8 @@
 import React from "react";
 import { FaSignOutAlt, FaUser, FaCog, FaAddressBook } from "react-icons/fa";
 
-const SidebarLeft = () => {
+const SidebarLeft = ({ username }) => {
+  const displayedUsername = username || "Guest";
   return (
     <div>
       <div className="flex w-44 md:w-60 m-4 md:m-[6] sm:h-[490px] md:h-[95vh] flex-col items-center rounded-2xl bg-secondary justify-between flex-grow">
@@ -13,7 +14,7 @@ const SidebarLeft = () => {
             className="w-7 h-7  rounded-full"
           />
           <p className="text-2xl text-white font-semibold">
-            hi, <span>aftab</span>
+            hi, <span>{displayedUsername}</span>
           </p>
         </div>
 

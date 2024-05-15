@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../store";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { storeTokenInLS } = useAuth();
 
   const [user, setUser] = useState({
     email: "",
@@ -31,11 +33,13 @@ const Login = () => {
         const token = response.data.token;
 
         toast.success("Login successful");
+        storeTokenInLS(token);
+
         console.log("Login successful:", response.data);
+        navigate("/");
         // Save the user to local storage
         localStorage.setItem("token", token);
         // Redirect to the chat page
-        navigate("/");
       } else {
         toast.success("Login failed");
         console.log("User not found", response.data);

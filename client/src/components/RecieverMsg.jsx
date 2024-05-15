@@ -1,4 +1,5 @@
 import React from "react";
+import UserGetMessages from "../hooks/GetMessages";
 
 const ReceivedMsg = () => {
   const messages = [
@@ -10,6 +11,7 @@ const ReceivedMsg = () => {
         "That's awesome. I think our users will really appreciate the improvements.",
     },
   ];
+  UserGetMessages();
 
   return (
     <>

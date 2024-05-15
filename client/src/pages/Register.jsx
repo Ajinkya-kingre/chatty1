@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useAuth } from "../store";
 
 const Register = () => {
   const navigate = useNavigate();
+  const { storeTokenInLS } = useAuth();
 
   const [user, setUser] = useState({
     username: "",
@@ -17,9 +19,13 @@ const Register = () => {
     e.preventDefault();
 
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         `http://localhost:8000/api/auth/register`,
         {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           username: user.username,
           email: user.email,
           password: user.password,
@@ -30,16 +36,16 @@ const Register = () => {
       if (response.status >= 200 && response.status < 300) {
         const token = response.data.token;
 
+        storeTokenInLS(data.token);
+
         toast.success(response.data.message);
         console.log("Register successful:", response.data);
-
-        // Save the user to local storage
-        localStorage.setItem("token", token);
 
         // Redirect to the chat page
         navigate("/login");
       } else {
         toast.success(response.data.message);
+        toast.success("there is error during registration");
         console.log("there is error during registration", response.data);
       }
     } catch (error) {
