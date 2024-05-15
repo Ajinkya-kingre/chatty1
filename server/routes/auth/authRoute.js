@@ -12,7 +12,7 @@ const {
   getOtherUsers,
 } = require("../../controller/authController");
 const validate = require("../../middleware/authMiddle.js");
-const isAuthenticated = require("../../middleware/isAuthenticate.js")
+const isAuthenticated = require("../../middleware/isAuthenticate.js");
 
 router.route("/register").post(validate(registrationSchema), register);
 router.route("/login").post(validate(loginSchema), login);
