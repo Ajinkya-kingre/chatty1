@@ -3,7 +3,7 @@ import React from "react";
 const Header = () => {
   return (
     <div >
-      <nav className="pl-7 justify-between absolute m-4 right-[1.5%] w-[82.5%] rounded-lg h-16 flex bg-gray-500">
+      <nav className="pl-7 justify-between absolute m-4 right-[1%] w-[79%] rounded-lg h-16 flex bg-gray-500">
         {/* Left nav */}
         <div className="flex justify-center items-center">
           <h1 className="text-center font-bold  font- text-white">ChatApp</h1>
