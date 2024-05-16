@@ -1,29 +1,35 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import React, { useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import axios from "axios";
 
-const UserGetMessages = () => {
-  const { SelectedUser } = useSelector((store) => store.user);
+// const ReceivedMsgs = () => {
+//   const { SelectedUser } = useSelector((store) => store.user);
 
-  useEffect(() => {
-    console.log("SelectedUser:", SelectedUser);
-    console.log("_id:", SelectedUser?._id);
+//   useEffect(() => {
+//     const fetchMessages = async () => {
+//       try {
+//         axios.defaults.withCredentials = true;
+//         const response = await axios.get(
+//           `http://localhost:8000/api/message/${SelectedUser?._id}`
+//         );
+//         console.log(response.data); // Assuming the response contains message data
+//       } catch (error) {
+//         console.error("Error fetching messages:", error);
+//       }
+//     };
 
-    const FetchMessages = async () => {
-      try {
-        const req = await axios.get(
-          `http://localhost:8000/api/message/${SelectedUser?._id}`
-        );
-        console.log(req);
-      } catch (error) {
-        console.error("Error fetching message:", error);
-      }
-    };
+//     if (SelectedUser) {
+//       fetchMessages();
+//     }
+//   }, [SelectedUser]);
 
-    FetchMessages();
-  }, [SelectedUser]); // Add SelectedUser as a dependency to useEffect
+//   return (
+//     // JSX to render received messages
+//     // You can map through the messages data fetched and render each message
+//     <div className="flex w-[50%]  relative mb-6 left-[8%] items-start gap-2">
+//       {/* Render messages here */}
+//     </div>
+//   );
+// };
 
-  return null; // Component must return some JSX, can return null if it doesn't render anything
-};
-
-export default UserGetMessages;
+// export default ReceivedMsgs;

@@ -15,7 +15,6 @@ const Register = () => {
   });
 
   const handleSubmit = async (e) => {
-    console.log(user);
     e.preventDefault();
 
     try {
@@ -23,33 +22,34 @@ const Register = () => {
       const response = await axios.post(
         `http://localhost:8000/api/auth/register`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           username: user.username,
           email: user.email,
           password: user.password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      console.log("request from server", response.data);
 
       if (response.status >= 200 && response.status < 300) {
         const token = response.data.token;
 
-        storeTokenInLS(data.token);
+        // Store token in localStorage
+        localStorage.setItem("token", token);
 
         toast.success(response.data.message);
-        console.log("Register successful:", response.data);
 
-        // Redirect to the chat page
+        // Redirect to the login page after setting the token
         navigate("/login");
       } else {
-        toast.success(response.data.message);
-        toast.success("there is error during registration");
-        console.log("there is error during registration", response.data);
+        toast.error("There was an error during registration");
+        console.log("Error during registration:", response.data);
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Error during registration:", error);
+      toast.error("There was an error during registration");
     }
   };
 

@@ -6,6 +6,6 @@ const router = express();
 
 
 router.route("/send/:id").post(isAuthenticate, sendMessage)
-router.route("/:id").post(isAuthenticate, getMessage);
+router.route("/:id").get(isAuthenticate, getMessage);
 
 module.exports = router
