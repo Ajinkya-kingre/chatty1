@@ -6,7 +6,7 @@ const isAuthenticated = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: "Token not found" });
   }
-  
+
   const jwtToken = token.replace("Bearer ", "").trim();
   // console.log("Token from auth middleware:", jwtToken);
 
