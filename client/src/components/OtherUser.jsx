@@ -28,10 +28,11 @@ const OtherUser = () => {
   }, []);
   const dispatch = useDispatch();
   const { SelectedUser } = useSelector((store) => store.user);
-  console.log(SelectedUser);
-  const selectedUserHandler = (user) => {
-    console.log("selected user", user.username);
-    dispatch(SetSelectedUser(user));
+
+  const selectedUserHandler = (userId) => {
+    console.log("Selected user ID:", userId);
+    // Dispatch an action to set the selected user ID
+    dispatch(SetSelectedUser(userId));
   };
 
   return (
@@ -55,7 +56,7 @@ const OtherUser = () => {
                 alt="User"
                 className="w-10 h-10 rounded-full mr-2"
               />
-              {user.online && (
+              {user.status === 200 && (
                 <div className="top-0 start-7 absolute w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"></div>
               )}
             </div>
