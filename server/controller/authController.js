@@ -1,140 +1,105 @@
 const userModel = require("../model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../model/user")
 
 //register
 const register = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
+   try {
+        const { fullName, username, password, confirmPassword, gender } = req.body;
+        if (!fullName || !username || !password || !confirmPassword || !gender) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+        if (password !== confirmPassword) {
+            return res.status(400).json({ message: "Password do not match" });
+        }
 
-    if (!username || !email || !password) {
-      res.status(400).send("Please fill all the required fields");
-    } else {
-      const isEmailExist = await userModel.findOne({ email });
-      if (isEmailExist) {
-        return res.status(400).json({ message: "Email already exists" });
-      } else {
-        //hash the password
+        const user = await User.findOne({ username });
+        if (user) {
+            return res.status(400).json({ message: "Username already exit try different" });
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = new userModel({
-          username,
-          email,
-          password: hashedPassword,
+        // profilePhoto
+        const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+        const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+
+        await User.create({
+            fullName,
+            username,
+            password: hashedPassword,
+            profilePhoto: gender === "male" ? maleProfilePhoto : femaleProfilePhoto,
+            gender
         });
-
-        await newUser.save();
-        const payload = {
-          userId: newUser._id,
-          email: newUser.email,
-        };
-
-        const JWT_SECRET_KEY =
-          process.env.JWT_SECRET_KEY || "THIS_IS_JWT_SECRET_KEY";
-        const token = jwt.sign(payload, JWT_SECRET_KEY, { expiresIn: 84600 });
-
-        await userModel.updateOne(
-          { _id: newUser._id },
-          { $set: { usertoken: token } }
-        );
-
-        res
-          .status(201)
-          .send({ message: "User created successfully!!!", token });
-      }
+        return res.status(201).json({
+            message: "Account created successfully.",
+            success: true
+        })
+    } catch (error) {
+        console.log(error);
     }
-  } catch (error) {
-    res.status(500).json({ message: "server Error" });
-  }
 };
 
 //Login
 
 const login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).send("Please fill all the required fields");
-    }
+    try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ message: "All fields are required" });
+        };
+        const user = await User.findOne({ username });
+        if (!user) {
+            return res.status(400).json({
+                message: "Incorrect username or password",
+                success: false
+            })
+        };
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatch) {
+            return res.status(400).json({
+                message: "Incorrect username or password",
+                success: false
+            })
+        };
+        const tokenData = {
+            userId: user._id
+        };
 
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return res.status(400).send("User's email or password is incorrect");
-    }
+        const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, { expiresIn: '1d' });
 
-    const validateUser = await bcrypt.compare(password, user.password);
-    if (!validateUser) {
-      return res.status(400).send("User's email or password is incorrect");
-    }
-
-    // Generate JWT token
-    const payload = {
-      userId: user._id,
-      email: user.email,
-    };
-
-    const JWT_SECRET_KEY =
-      process.env.JWT_SECRET_KEY || "THIS_IS_JWT_SECRET_KEY";
-    jwt.sign(
-      payload,
-      JWT_SECRET_KEY,
-      { expiresIn: 84600 },
-      async function (err, token) {
-        if (err) {
-          console.error("JWT signing error:", err);
-          return res.status(500).json({ message: "Internal server error" });
-        }
-
-        // Update user document with the token
-        await userModel.updateOne(
-          { _id: user._id },
-          { $set: { usertoken: token } }
-        );
-
-        // Send response with user object and token
-        res.status(200).json({
-          user: { username: user.username, email: user.email },
-          token,
+        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict' }).json({
+            _id: user._id,
+            username: user.username,
+            fullName: user.fullName,
+            profilePhoto: user.profilePhoto
         });
-      }
-    );
-  } catch (error) {
-    console.error("Login error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // Logout
 const logout = async (req, res) => {
-  try {
-    // Clear user token from database (assuming user is authenticated)
-    await userModel.updateOne(
-      { _id: req.userId },
-      { $unset: { usertoken: 1 } }
-    );
-
-    // Clear client-side token (optional)
-    // For example, clear token from cookies or local storage
-
-    res.status(200).json({ message: "Logout successful" });
-  } catch (error) {
-    console.error("Logout error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
+   try {
+        return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+            message: "logged out successfully."
+        })
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // Get Other Users
 const getOtherUsers = async (req, res) => {
   try {
-    const loggedInUserId = req.userId;
-    const otherUsers = await userModel
-      .find({ _id: { $ne: loggedInUserId } })
-      .select("-password");
-    return res.status(200).json(otherUsers);
-  } catch (error) {
-    console.error("Get other users error:", error);
-    res.status(500).json({ message: "Server error" });
-  }
+        const loggedInUserId = req.id;
+        const otherUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
+        return res.status(200).json(otherUsers);
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 module.exports = { register, login, logout, getOtherUsers };

@@ -8,12 +8,12 @@ const registrationSchema = z.object({
     .min(3, { message: "Name must be at least 3 characters" })
     .max(255, { message: "Name must not be more than 255 characters" }),
     
-    email: 
-    z.string({ required_error: "Email is required" })
-    .email({ message: "Invalid email address" })
-    .trim()
-    .min(3, { message: "Email must be at least 3 characters" })
-    .max(255, { message: "Email must not be more than 255 characters" }),
+    // email: 
+    // z.string({ required_error: "Email is required" })
+    // .email({ message: "Invalid email address" })
+    // .trim()
+    // .min(3, { message: "Email must be at least 3 characters" })
+    // .max(255, { message: "Email must not be more than 255 characters" }),
     
     password: 
     z.string({ required_error: "Password is required" })

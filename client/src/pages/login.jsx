@@ -1,52 +1,45 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useAuth } from "../store";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "../redux/userslice";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const { storeTokenInLS } = useAuth();
-
   const [user, setUser] = useState({
-    email: "",
+    username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     console.log(user);
     e.preventDefault();
-    // console.log("Username", username);
-    // console.log("Password", password);.
     try {
       const response = await axios.post(
         `http://localhost:8000/api/auth/login`,
+        user,
         {
-          email: user.email,
-          password: user.password,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
         }
       );
-
-      console.log("request from server", response.data);
-
-      if (response.status >= 200 && response.status < 300) {
-        const token = response.data.token;
-
-        toast.success("Login successful");
-        storeTokenInLS(token);
-
-        console.log("Login successful:", response.data);
-        navigate("/");
-        // Save the user to local storage
-        localStorage.setItem("token", token);
-        // Redirect to the chat page
-      } else {
-        toast.success("Login failed");
-        console.log("User not found", response.data);
-      }
+      navigate("/");
+      console.log(response);
+      dispatch(setAuthUser(response.data));
     } catch (error) {
-      console.error("Login failed:", error);
+      toast.error(error.response.data.message || "An error occurred");
+      console.log(error);
     }
+    setUser({
+      username: "",
+      password: "",
+    });
   };
 
   return (
@@ -76,16 +69,16 @@ const Login = () => {
             className="flex w-full flex-col space-y-6"
           >
             <label htmlFor="username" className="text-gray-400 ">
-              email:
+              username:
             </label>
             <input
               className="w-full px-16 pl-4 py-2 rounded-md bg-transparent border border-white focus:outline-none focus:border-2 focus:border-purple-800"
               type="text"
-              name="email"
+              name="username"
               placeholder="Username"
-              id="email"
-              value={user.email}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              id="username"
+              value={user.username}
+              onChange={(e) => setUser({ ...user, username: e.target.value })}
               required
             />
             <label htmlFor="password" className="text-gray-400">

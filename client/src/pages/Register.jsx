@@ -2,55 +2,48 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useAuth } from "../store";
+// import { useAuth } from "../store";
 
-const Register = () => {
-  const navigate = useNavigate();
-  const { storeTokenInLS } = useAuth();
-
+const Signup = () => {
   const [user, setUser] = useState({
+    fullName: "",
     username: "",
-    email: "",
     password: "",
+    confirmPassword: "",
+    gender: "",
   });
-
-  const handleSubmit = async (e) => {
+  const navigate = useNavigate();
+  const handleCheckbox = (gender) => {
+    setUser({ ...user, gender });
+  };
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
+      const res = await axios.post(
         `http://localhost:8000/api/auth/register`,
-        {
-          username: user.username,
-          email: user.email,
-          password: user.password,
-        },
+        user,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
-
-      if (response.status >= 200 && response.status < 300) {
-        const token = response.data.token;
-
-        // Store token in localStorage
-        localStorage.setItem("token", token);
-
-        toast.success(response.data.message);
-
-        // Redirect to the login page after setting the token
+      if (res.data.success) {
         navigate("/login");
-      } else {
-        toast.error("There was an error during registration");
-        console.log("Error during registration:", response.data);
+        toast.success(res.data.message);
       }
     } catch (error) {
-      console.error("Error during registration:", error);
-      toast.error("There was an error during registration");
+      toast.error(error.response.data.message);
+      console.log(error);
     }
+    setUser({
+      fullName: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
+      gender: "",
+    });
   };
 
   return (
@@ -79,9 +72,23 @@ const Register = () => {
             Create Your Account
           </h2>
           <form
-            onSubmit={handleSubmit}
-            className="flex w-full flex-col space-y-5"
+            onSubmit={onSubmitHandler}
+            className="flex w-full flex-col space-y-3"
           >
+            {/* fullName fieldsd */}
+            <label htmlFor="fullName" className="text-gray-400">
+              fullName:
+            </label>
+            <input
+              className="w-full px-16 pl-4 py-2 rounded-md bg-transparent border border-white focus:outline-none focus:border-2 focus:border-purple-800"
+              type="text"
+              name="fullName"
+              value={user.fullName}
+              onChange={(e) => setUser({ ...user, fullName: e.target.value })}
+              placeholder="fullName"
+              id="fullName"
+              required
+            />
             {/* Username fieldsd */}
             <label htmlFor="username" className="text-gray-400">
               Username:
@@ -96,21 +103,6 @@ const Register = () => {
               id="username"
               required
             />
-            {/* Email addresss fieldds */}
-            <label htmlFor="email" className="text-gray-400">
-              Email:
-            </label>
-            <input
-              className="w-full px-16 pl-4 py-2 rounded-md bg-transparent border border-white focus:outline-none focus:border-2 focus:border-purple-800"
-              type="email"
-              name="email"
-              value={user.email}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
-              placeholder="Enter your Email"
-              id="email"
-              required
-            />
-
             {/* Password dfield*/}
             <label htmlFor="password" className="text-gray-400">
               Password:
@@ -125,7 +117,44 @@ const Register = () => {
               id="password"
               required
             />
-
+            {/* ConfirmPassword dfield*/}
+            <label htmlFor="ConfirmPassword" className="text-gray-400">
+              Password:
+            </label>
+            <input
+              className="w-full px-4 py-2 rounded-md bg-transparent border border-white focus:outline-none focus:border-2 focus:border-purple-800 mt-4"
+              type="password"
+              name="ConfirmPassword"
+              placeholder="Confirm Password"
+              value={user.confirmPassword}
+              onChange={(e) =>
+                setUser({ ...user, confirmPassword: e.target.value })
+              }
+              id="confirmPassword"
+              required
+            />
+            <div className="flex items-center my-4">
+              <div className="flex items-center">
+                <p>Male</p>
+                <input
+                  type="checkbox"
+                  checked={user.gender === "male"}
+                  onChange={() => handleCheckbox("male")}
+                  defaultChecked
+                  className="checkbox mx-2"
+                />
+              </div>
+              <div className="flex items-center">
+                <p>Female</p>
+                <input
+                  type="checkbox"
+                  checked={user.gender === "female"}
+                  onChange={() => handleCheckbox("female")}
+                  defaultChecked
+                  className="checkbox mx-2"
+                />
+              </div>
+            </div>
             <button
               className="px-4 py-2 rounded-md bg-purple-600 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-700 mt-4"
               type="submit"
@@ -145,4 +174,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Signup;

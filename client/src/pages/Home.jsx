@@ -1,17 +1,14 @@
 import React from "react";
-import UserSide from "../components/UserSide";
-import MsgContainer from "../components/MsgContainer";
-import SidebarLeft from "../components/sidebarLeft";
-import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
+import MessageContainer from "../components/messageContainer";
+import SideHeader from "../components/SideHeader";
 
 const Home = () => {
   return (
-    <div className="w-full flex flex-row content-center sm:h-[100vh] md:h-[100vh] rounded overflow-hidden bg-background">
-      <SidebarLeft />
-
-      <UserSide />
-      <Header />
-      <MsgContainer />
+    <div className="flex  flex-row sm:h-[690px] md:h-[690px] rounded-xl overflow-hidden bg-gray-700 ">
+      <SideHeader />
+      <Sidebar />
+      <MessageContainer />
     </div>
   );
 };

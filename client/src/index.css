@@ -23,3 +23,49 @@ body{
     height: 100vh;
     background-color: #171717;
 }
+::-webkit-scrollbar {
+  /* Customize the scrollbar width */
+  width:6px;
+ 
+}
+
+::-webkit-scrollbar-track {
+  /* Customize the scrollbar track */
+  background-color: aliceblue;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  /* Customize the scrollbar thumb */
+  background: #1b1b1b;
+  border-radius: 10px;
+}
+.chat {
+  clear: both;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+
+.chat-start {
+  float: left;
+
+  border-radius: 12px;
+  margin-left: 20px;
+  max-width: 60%;
+  padding: 10px;
+}
+
+.chat-end {
+  float: right;
+
+  border-radius: 12px;
+  margin-right: 20px;
+  max-width: 60%;
+  padding: 10px;
+}
+
+.chat-bubble {
+  border-radius: 12px;
+  padding: 10px;
+  margin: 5px 0;
+}

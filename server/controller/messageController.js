@@ -1,16 +1,17 @@
+
+
+{/**
+const  {io,getReceiverSocketId}  = require('../app') */} // uncomment this
+
 const Conversation = require("../model/conversation");
 const Message = require("../model/message");
-const { getReceiverSocketId, io } = require("../socket/socket");
+
 
 const sendMessage = async (req, res) => {
   try {
     const senderId = req.id;
     const receiverId = req.params.id;
     const { message } = req.body;
-
-    // console.log('Sender ID:', senderId); // Debug log
-    // console.log('Receiver ID:', receiverId); // Debug log
-    // console.log('Message:', message); // Debug log
 
     if (!message || !receiverId) {
       return res
@@ -37,11 +38,11 @@ const sendMessage = async (req, res) => {
     conversation.messages.push(newMessage._id);
     await conversation.save();
 
-    // socket.io
+  {/*  // socket.io
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
-    }
+    } */}  // uncomment this
 
     return res.status(201).json({ newMessage });
   } catch (error) {
@@ -50,14 +51,14 @@ const sendMessage = async (req, res) => {
   }
 };
 
-const getMessage = async (req, res) => {
+const getMessage = async (req, res ) => {
   try {
     const senderId = req.id;
     const recieverId = req.params.id;
     const conversation = await Conversation.findOne({
       participants: { $all: [senderId, recieverId] },
     }).populate("messages");
-        console.log(conversation)
+       
     return res.status(200).send(conversation?.messages);
 
     
