@@ -1,10 +1,9 @@
-
-
-{/**
-const  {io,getReceiverSocketId}  = require('../app') */} // uncomment this
-
+ // uncomment this
+const { promise } = require("zod");
 const Conversation = require("../model/conversation");
 const Message = require("../model/message");
+const {io, getReceiverSocketId } = require("../socket");
+
 
 
 const sendMessage = async (req, res) => {
@@ -36,13 +35,14 @@ const sendMessage = async (req, res) => {
     });
 
     conversation.messages.push(newMessage._id);
-    await conversation.save();
+   
+   await Promise.all([conversation.save(),newMessage.save()])
 
-  {/*  // socket.io
+
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
-    } */}  // uncomment this
+    }
 
     return res.status(201).json({ newMessage });
   } catch (error) {
